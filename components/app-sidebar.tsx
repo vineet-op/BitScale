@@ -21,6 +21,7 @@ import {
   SettingsIcon,
   CommandIcon,
   RocketIcon,
+  Book,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -35,12 +36,17 @@ const data = {
     {
       title: "Playbooks",
       url: "#",
-      icon: <RocketIcon className="size-4 text-amber-500" />,
+      icon: <Book className="size-4" />,
     },
     {
       title: "Integrations",
       url: "#",
       icon: <PlugIcon className="size-4" />,
+      badge: (
+        <span className="flex size-[26px] px-5 py-1 shrink-0 items-center justify-center rounded-lg bg-[#FBF3DB]">
+          <RocketIcon className="size-3 text-[#CB912E]" />
+        </span>
+      ),
     },
   ],
 
