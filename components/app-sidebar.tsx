@@ -1,0 +1,98 @@
+"use client";
+
+import * as React from "react";
+
+import { NavDocuments } from "@/components/nav-documents";
+import { NavMain } from "@/components/nav-main";
+import { NavUser } from "@/components/nav-user";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+} from "@/components/ui/sidebar";
+import {
+  LayoutDashboardIcon,
+  PlugIcon,
+  BookOpenIcon,
+  SettingsIcon,
+  CommandIcon,
+  RocketIcon,
+} from "lucide-react";
+import { cn } from "@/lib/utils";
+
+const data = {
+  Home: [
+    {
+      title: "My Dashboard",
+      url: "#",
+      icon: <LayoutDashboardIcon className="size-4" />,
+      isActive: true,
+    },
+    {
+      title: "Playbooks",
+      url: "#",
+      icon: <RocketIcon className="size-4 text-amber-500" />,
+    },
+    {
+      title: "Integrations",
+      url: "#",
+      icon: <PlugIcon className="size-4" />,
+    },
+  ],
+
+  other: [
+    {
+      name: "Documentation",
+      url: "#",
+      icon: <BookOpenIcon className="size-4" />,
+    },
+    {
+      name: "Settings",
+      url: "#",
+      icon: <SettingsIcon className="size-4" />,
+    },
+  ],
+};
+
+export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  return (
+    <Sidebar
+      collapsible="offcanvas"
+      variant="sidebar"
+      {...props}
+      className={cn(
+        "border-[#E5E7EB] bg-white p-0 [&_[data-slot=sidebar-inner]]:rounded-none [&_[data-slot=sidebar-inner]]:bg-white",
+        props.className,
+      )}
+    >
+      <SidebarHeader className="border-b border-[#E5E7EB] p-0 px-4 py-2.5">
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              asChild
+              className="h-auto p-0 hover:bg-transparent"
+            >
+              <a href="#" className="flex items-center gap-2">
+                <CommandIcon className="size-5 text-[#1F2A37]" />
+                <span className="text-xl font-semibold text-[#1F2A37]">
+                  Bitscale
+                </span>
+              </a>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarHeader>
+      <SidebarContent className="p-0">
+        <NavMain items={data.Home} />
+        <NavDocuments items={data.other} />
+      </SidebarContent>
+      <SidebarFooter className="border-t border-[#E5E7EB] p-0 px-3 py-3">
+        <NavUser />
+      </SidebarFooter>
+    </Sidebar>
+  );
+}

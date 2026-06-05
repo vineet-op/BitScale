@@ -1,0 +1,84 @@
+[
+  {
+    "id": 1,
+    "name": "Workbook - Testing design Ideas for grid and workbook",
+    "editedBy": "Sam Taylor",
+    "lastEdited": "06 Aug, 2025",
+    "starred": true,
+    "expanded": true,
+    "icons": ["person", "hubspot", "building"]
+  },
+  {
+    "id": 2,
+    "name": "LinkedIn",
+    "editedBy": "Chris Parker",
+    "lastEdited": "06 Aug, 2025",
+    "starred": false,
+    "icons": ["linkedin"]
+  },
+  {
+    "id": 3,
+    "name": "Sales nav",
+    "editedBy": "Jone Doe",
+    "lastEdited": "06 Aug, 2025",
+    "starred": false,
+    "icons": ["fly"]
+  },
+  {
+    "id": 4,
+    "name": "find company",
+    "editedBy": "Alex Morgan",
+    "lastEdited": "06 Aug, 2025",
+    "starred": true,
+    "icons": ["building"]
+  },
+  {
+    "id": 5,
+    "name": "import csv",
+    "editedBy": "Drew Wilson",
+    "lastEdited": "06 Aug, 2025",
+    "starred": true,
+    "icons": ["csv"]
+  },
+  {
+    "id": 6,
+    "name": "Find people",
+    "editedBy": "Jone Doe",
+    "lastEdited": "06 Aug, 2025",
+    "starred": false,
+    "icons": ["people"]
+  },
+  {
+    "id": 7,
+    "name": "Google maps",
+    "editedBy": "Jone Doe",
+    "lastEdited": "06 Aug, 2025",
+    "starred": false,
+    "icons": ["maps"]
+  },
+  {
+    "id": 8,
+    "name": "google search results",
+    "editedBy": "Jone Doe",
+    "lastEdited": "06 Aug, 2025",
+    "starred": false,
+    "icons": ["google"]
+  },
+  {
+    "id": 9,
+    "name": "factors",
+    "editedBy": "Jone Doe",
+    "lastEdited": "06 Aug, 2025",
+    "starred": false,
+    "icons": ["bolt"]
+  },
+  {
+    "id": 10,
+    "name": "Hubspot List - 10 (05 Aug 25)",
+    "editedBy": "Jone Doe",
+    "lastEdited": "06 Aug, 2025",
+    "starred": true,
+    "icons": ["hubspot"],
+    "highlighted": false
+  }
+]
