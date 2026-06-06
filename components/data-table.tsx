@@ -16,7 +16,9 @@ import {
   StarIcon,
   UsersRound,
 } from "lucide-react";
+import { AnimatePresence, LayoutGroup, motion } from "motion/react";
 import { cn } from "@/lib/utils";
+import { duration, easeOut, tapScale } from "@/lib/motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -168,9 +170,27 @@ function GridNameCell({ row }: { row: GridRow }) {
 
 // ─── Table ───────────────────────────────────────────────────────────────────
 
-function GridTable({ data }: { data: GridRow[] }) {
+function GridTable({
+  data,
+  activeTab,
+}: {
+  data: GridRow[];
+  activeTab: string;
+}) {
   const [search, setSearch] = React.useState("");
   const [sortAsc, setSortAsc] = React.useState(true);
+  const [animateRows, setAnimateRows] = React.useState(false);
+  const isInitialTab = React.useRef(true);
+
+  React.useEffect(() => {
+    if (isInitialTab.current) {
+      isInitialTab.current = false;
+      return;
+    }
+    setAnimateRows(true);
+    const timer = setTimeout(() => setAnimateRows(false), 400);
+    return () => clearTimeout(timer);
+  }, [activeTab]);
 
   const filtered = React.useMemo(() => {
     const q = search.toLowerCase();
@@ -192,11 +212,13 @@ function GridTable({ data }: { data: GridRow[] }) {
             onClick={() => setSortAsc((v) => !v)}
           >
             Name
-            {sortAsc ? (
+            <motion.span
+              animate={{ rotate: sortAsc ? 0 : 180 }}
+              transition={{ duration: duration.fast, ease: easeOut }}
+              className="inline-flex"
+            >
               <ChevronUpIcon className="size-3.5" />
-            ) : (
-              <ChevronDownIcon className="size-3.5" />
-            )}
+            </motion.span>
           </button>
         </TableHead>
         <TableHead className="h-10 text-[12px] font-medium text-[#1A202C]">
@@ -212,9 +234,28 @@ function GridTable({ data }: { data: GridRow[] }) {
     </TableHeader>
   );
 
-  function BodyRow({ row }: { row: GridRow }) {
+  function BodyRow({
+    row,
+    index,
+    animateEnter,
+  }: {
+    row: GridRow;
+    index: number;
+    animateEnter: boolean;
+  }) {
     return (
-      <TableRow className="border-[#E5E7EB] hover:bg-[#F9FAFB]">
+      <motion.tr
+        layout
+        initial={animateEnter ? { opacity: 0, y: 4 } : false}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -4 }}
+        transition={{
+          duration: duration.fast,
+          ease: easeOut,
+          delay: animateEnter ? Math.min(index * 0.03, 0.15) : 0,
+        }}
+        className="border-b border-[#E5E7EB] hover:bg-[#F9FAFB]"
+      >
         <TableCell className="py-3 pl-6">
           <GridNameCell row={row} />
         </TableCell>
@@ -228,15 +269,17 @@ function GridTable({ data }: { data: GridRow[] }) {
           {row.lastEdited}
         </TableCell>
         <TableCell className="py-3 pr-6 text-right">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="size-8 text-[#1A202C] hover:bg-transparent"
-          >
-            <EllipsisIcon className="size-4" />
-          </Button>
+          <motion.div whileTap={tapScale} className="inline-flex">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="size-8 text-[#1A202C] hover:bg-transparent"
+            >
+              <EllipsisIcon className="size-4" />
+            </Button>
+          </motion.div>
         </TableCell>
-      </TableRow>
+      </motion.tr>
     );
   }
 
@@ -244,20 +287,36 @@ function GridTable({ data }: { data: GridRow[] }) {
     <div className="flex flex-col gap-4">
       {/* Tab bar + search */}
       <div className="flex flex-col gap-3 px-4 sm:flex-row sm:items-center sm:justify-between lg:px-6">
-        <TabsList className="h-auto w-fit gap-6 rounded-none border-b border-[#E5E7EB] bg-transparent p-0">
-          <TabsTrigger
-            value="my-grids"
-            className="-mb-px cursor-pointer h-auto flex-none rounded-none border-b-2 border-transparent bg-transparent px-0 pb-2.5 pt-0 text-[13px] font-medium text-[#6B7280] shadow-none after:hidden hover:text-[#6B7280] data-[state=active]:border-b-[#1A56DB] data-[state=active]:bg-transparent data-[state=active]:text-[#1A56DB] data-[state=active]:shadow-none"
-          >
-            My Grids
-          </TabsTrigger>
-          <TabsTrigger
-            value="starred"
-            className="-mb-px cursor-pointer h-auto flex-none rounded-none border-b-2 border-transparent bg-transparent px-0 pb-2.5 pt-0 text-[13px] font-medium text-[#6B7280] shadow-none after:hidden hover:text-[#6B7280] data-[state=active]:border-b-[#1A56DB] data-[state=active]:bg-transparent data-[state=active]:text-[#1A56DB] data-[state=active]:shadow-none"
-          >
-            Starred
-          </TabsTrigger>
-        </TabsList>
+        <LayoutGroup id="grid-tabs">
+          <TabsList className="relative h-auto w-fit gap-6 rounded-none border-b border-[#E5E7EB] bg-transparent p-0">
+            <TabsTrigger
+              value="my-grids"
+              className="relative -mb-px h-auto flex-none cursor-pointer rounded-none border-b-2 border-transparent bg-transparent px-0 pb-2.5 pt-0 text-[13px] font-medium text-[#6B7280] shadow-none after:hidden hover:text-[#6B7280] data-[state=active]:border-transparent data-[state=active]:bg-transparent data-[state=active]:text-[#1A56DB] data-[state=active]:shadow-none"
+            >
+              My Grids
+              {activeTab === "my-grids" && (
+                <motion.span
+                  layoutId="grid-tab-indicator"
+                  className="absolute right-0 bottom-0 left-0 h-0.5 bg-[#1A56DB]"
+                  transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                />
+              )}
+            </TabsTrigger>
+            <TabsTrigger
+              value="starred"
+              className="relative -mb-px h-auto flex-none cursor-pointer rounded-none border-b-2 border-transparent bg-transparent px-0 pb-2.5 pt-0 text-[13px] font-medium text-[#6B7280] shadow-none after:hidden hover:text-[#6B7280] data-[state=active]:border-transparent data-[state=active]:bg-transparent data-[state=active]:text-[#1A56DB] data-[state=active]:shadow-none"
+            >
+              Starred
+              {activeTab === "starred" && (
+                <motion.span
+                  layoutId="grid-tab-indicator"
+                  className="absolute right-0 bottom-0 left-0 h-0.5 bg-[#1A56DB]"
+                  transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                />
+              )}
+            </TabsTrigger>
+          </TabsList>
+        </LayoutGroup>
 
         <div className="flex items-center gap-2">
           <div className="relative">
@@ -285,9 +344,16 @@ function GridTable({ data }: { data: GridRow[] }) {
           <Table>
             {tableHead}
             <TableBody>
-              {filtered.map((row) => (
-                <BodyRow key={row.id} row={row} />
-              ))}
+              <AnimatePresence mode="popLayout">
+                {filtered.map((row, index) => (
+                  <BodyRow
+                    key={row.id}
+                    row={row}
+                    index={index}
+                    animateEnter={animateRows && activeTab === "my-grids"}
+                  />
+                ))}
+              </AnimatePresence>
             </TableBody>
           </Table>
         </div>
@@ -299,11 +365,18 @@ function GridTable({ data }: { data: GridRow[] }) {
           <Table>
             {tableHead}
             <TableBody>
-              {filtered
-                .filter((row) => row.starred)
-                .map((row) => (
-                  <BodyRow key={row.id} row={row} />
-                ))}
+              <AnimatePresence mode="popLayout">
+                {filtered
+                  .filter((row) => row.starred)
+                  .map((row, index) => (
+                    <BodyRow
+                      key={row.id}
+                      row={row}
+                      index={index}
+                      animateEnter={animateRows && activeTab === "starred"}
+                    />
+                  ))}
+              </AnimatePresence>
             </TableBody>
           </Table>
         </div>
@@ -313,9 +386,15 @@ function GridTable({ data }: { data: GridRow[] }) {
 }
 
 export function DataTable({ data }: { data: GridRow[] }) {
+  const [activeTab, setActiveTab] = React.useState("my-grids");
+
   return (
-    <Tabs defaultValue="my-grids" className="w-full">
-      <GridTable data={data} />
+    <Tabs
+      value={activeTab}
+      onValueChange={setActiveTab}
+      className="w-full"
+    >
+      <GridTable data={data} activeTab={activeTab} />
     </Tabs>
   );
 }

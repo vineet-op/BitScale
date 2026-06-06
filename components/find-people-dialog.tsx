@@ -18,8 +18,11 @@ import {
   UsersIcon,
 } from "lucide-react";
 
+import { motion } from "motion/react";
+
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { duration, easeOut, staggerContainer, tapScale } from "@/lib/motion";
 import {
   Table,
   TableBody,
@@ -71,6 +74,15 @@ const FILTERS: FilterItem[] = [
 
 // ─── Table column headings ─────────────────────────────────────────────────
 
+const filterSlide = {
+  hidden: { opacity: 0, x: -8 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: { duration: duration.normal, ease: easeOut },
+  },
+};
+
 const COLUMNS = [
   "Name",
   "Title",
@@ -110,7 +122,12 @@ export function FindPeopleDialog({
           </div>
 
           {/* People Keyword card — same structure as filter cards */}
-          <div className="pt-3 pr-5 pb-0 pl-5">
+          <motion.div
+            initial={{ opacity: 0, x: -8 }}
+            animate={open ? { opacity: 1, x: 0 } : { opacity: 0, x: -8 }}
+            transition={{ duration: duration.normal, ease: easeOut }}
+            className="pt-3 pr-5 pb-0 pl-5"
+          >
             <div className="flex items-start gap-[6px] pb-3">
               <UserRoundSearchIcon className="size-4 -mt-0.5 shrink-0 text-[#111928]" />
               <div className="flex flex-col gap-[6px]">
@@ -127,15 +144,20 @@ export function FindPeopleDialog({
                 className="w-full border-0 py-3 border-b border-[#E5E7EB] bg-transparent pb-2 pl-6 text-[13px] text-[#111928] outline-none placeholder:text-[#9CA3AF] focus:border-[#1F2A37]"
               />
             </div>
-          </div>
+          </motion.div>
 
           {/* Divider */}
           <div className="mx-5 border-t border-[#E5E7EB]" />
 
           {/* Filter cards */}
-          <div className="flex-1 overflow-y-auto">
+          <motion.div
+            className="flex-1 overflow-y-auto"
+            variants={staggerContainer}
+            initial="hidden"
+            animate={open ? "visible" : "hidden"}
+          >
             {FILTERS.map((f, i) => (
-              <React.Fragment key={f.title}>
+              <motion.div key={f.title} variants={filterSlide}>
                 <button className="flex w-full items-start justify-between pt-3 pr-5 pb-4 pl-5 text-left hover:bg-gray-50">
                   <div className="flex items-start gap-[6px]">
                     <div className="shrink-0 text-[#111928]">{f.icon}</div>
@@ -153,23 +175,27 @@ export function FindPeopleDialog({
                   )}
                 </button>
                 <div className="mx-5 border-t border-[#E5E7EB]" />
-              </React.Fragment>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
 
           {/* Bottom buttons */}
           <div className="flex items-center gap-3 px-5 py-4">
-            <Button
-              variant="outline"
-              className="flex h-auto items-center gap-2 border-[#E5E7EB] px-3 py-2 text-[12px] font-medium text-[#1F2A37] shadow-none hover:bg-gray-50"
-            >
-              <FileSearch className="size-4 text-[#6B7280]" />
-              Save Search
-            </Button>
-            <Button className="flex h-auto flex-1 items-center justify-center gap-2 bg-[#1F2A37] px-3 py-2 text-[12px] font-medium text-white hover:bg-[#1F2A37]/90">
-              <EyeIcon className="size-4" />
-              Preview Result
-            </Button>
+            <motion.div whileTap={tapScale}>
+              <Button
+                variant="outline"
+                className="flex h-auto items-center gap-2 border-[#E5E7EB] px-3 py-2 text-[12px] font-medium text-[#1F2A37] shadow-none hover:bg-gray-50"
+              >
+                <FileSearch className="size-4 text-[#6B7280]" />
+                Save Search
+              </Button>
+            </motion.div>
+            <motion.div whileTap={tapScale} className="flex flex-1">
+              <Button className="flex h-auto w-full flex-1 items-center justify-center gap-2 bg-[#1F2A37] px-3 py-2 text-[12px] font-medium text-white hover:bg-[#1F2A37]/90">
+                <EyeIcon className="size-4" />
+                Preview Result
+              </Button>
+            </motion.div>
           </div>
         </div>
 
@@ -227,7 +253,18 @@ export function FindPeopleDialog({
                   {/* Empty state */}
                   <tr>
                     <td colSpan={COLUMNS.length}>
-                      <div className="flex flex-col items-center justify-center gap-3 py-16">
+                      <motion.div
+                        initial={{ opacity: 0, y: 6 }}
+                        animate={
+                          open ? { opacity: 1, y: 0 } : { opacity: 0, y: 6 }
+                        }
+                        transition={{
+                          duration: duration.normal,
+                          ease: easeOut,
+                          delay: 0.12,
+                        }}
+                        className="flex flex-col items-center justify-center gap-3 py-16"
+                      >
                         <Image
                           src="/Card.png"
                           alt="No results"
@@ -244,7 +281,7 @@ export function FindPeopleDialog({
                           <br />
                           Import companies from saved Search.
                         </p>
-                      </div>
+                      </motion.div>
                     </td>
                   </tr>
                 </TableBody>

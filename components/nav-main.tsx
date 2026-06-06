@@ -8,8 +8,10 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { motion } from "motion/react";
 import { ChevronRightIcon, ChevronsUpDownIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { duration, easeOut } from "@/lib/motion";
 
 export function NavMain({
   items,
@@ -63,7 +65,7 @@ export function NavMain({
                 tooltip={item.title}
                 isActive={item.isActive}
                 className={cn(
-                  "h-9 px-3 text-[12.56px] font-medium text-[#1F2A37]",
+                  "h-9 px-3 text-[12.56px] font-medium text-[#1F2A37] cursor-pointer",
                   item.isActive
                     ? "rounded-lg bg-[#F3F4F6] text-[#2563EB] hover:bg-[#F3F4F6] hover:text-[#2563EB]"
                     : "rounded-none",
@@ -72,7 +74,13 @@ export function NavMain({
                 {item.icon}
                 <span className="flex-1">{item.title}</span>
                 {item.isActive ? (
-                  <ChevronRightIcon className="size-4 shrink-0 text-[#2563EB]" />
+                  <motion.span
+                    className="inline-flex shrink-0"
+                    whileHover={{ x: 2 }}
+                    transition={{ duration: duration.fast, ease: easeOut }}
+                  >
+                    <ChevronRightIcon className="size-4 text-[#2563EB]" />
+                  </motion.span>
                 ) : (
                   item.badge
                 )}
