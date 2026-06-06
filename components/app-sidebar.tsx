@@ -2,6 +2,7 @@
 
 import * as React from "react";
 
+import { BitscaleLogo } from "@/components/bitscale-logo";
 import { NavDocuments } from "@/components/nav-documents";
 import { NavMain } from "@/components/nav-main";
 import { NavUser } from "@/components/nav-user";
@@ -19,7 +20,6 @@ import {
   PlugIcon,
   BookOpenIcon,
   SettingsIcon,
-  CommandIcon,
   RocketIcon,
   Book,
 } from "lucide-react";
@@ -80,13 +80,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarMenuItem>
             <SidebarMenuButton
               asChild
-              className="h-auto p-0 hover:bg-transparent"
+              className="h-auto py-0 hover:bg-transparent"
             >
-              <a href="#" className="flex items-center gap-2">
-                <CommandIcon className="size-5 text-[#1F2A37]" />
-                <span className="text-xl font-semibold text-[#1F2A37]">
-                  Bitscale
-                </span>
+              <a href="#" className="flex items-center">
+                <BitscaleLogo className="h-7 w-auto" />
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>

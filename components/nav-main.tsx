@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -22,18 +23,33 @@ export function NavMain({
 }) {
   return (
     <SidebarGroup className="p-0">
-      <SidebarGroupContent className="flex flex-col gap-1 px-3 pt-3">
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton className="h-9 gap-2  bg-white px-3 text-[12.56px] font-medium text-[#1F2A37] shadow-none">
-              <span className="flex size-5 items-center justify-center rounded-full bg-[#E5E7EB] text-[10px] font-semibold text-[#1F2A37]">
-                G
-              </span>
-              <span className="flex-1">GTM Spaces</span>
-              <ChevronsUpDownIcon className="size-4 text-[#9CA3AF]" />
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
+      <SidebarGroupContent className="flex flex-col gap-1">
+        <div className="border-b border-[#E5E7EB] pb-3 pt-3">
+          <SidebarMenu className="px-3">
+            <SidebarMenuItem>
+              <SidebarMenuButton className="h-9 gap-2 rounded-none bg-white px-0 text-[12.56px] font-medium text-[#1F2A37] shadow-none">
+                <div className="flex items-center">
+                  <Image
+                    src="/people1.jpg"
+                    alt=""
+                    width={24}
+                    height={24}
+                    className="size-6 shrink-0 rounded-full object-cover"
+                  />
+                  <Image
+                    src="/people2.jpg"
+                    alt=""
+                    width={24}
+                    height={24}
+                    className="-ml-2 size-6 shrink-0 rounded-full object-cover"
+                  />
+                </div>
+                <span className="flex-1 font-medium">GTM Spaces</span>
+                <ChevronsUpDownIcon className="size-4 text-[#9CA3AF]" />
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </div>
 
         <p className="px-3 pt-4 text-[11px] font-medium uppercase tracking-wide text-[#9CA3AF]">
           Home

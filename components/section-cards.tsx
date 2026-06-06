@@ -30,11 +30,15 @@ export function SectionCards() {
         <div className="flex h-[97px] gap-4">
           <div className="relative h-[97px] w-[138px] shrink-0 overflow-hidden rounded-lg">
             <Image
-              src="/linkedin.png"
+              src="/cam.png"
               alt="How to Integrate 2 Way HubSpot video thumbnail"
               fill
               className="object-cover object-top"
               sizes="138px"
+              style={{
+                background:
+                  "linear-gradient(0deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.2) 50%, rgba(0, 0, 0, 0) 100%)",
+              }}
             />
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="flex size-7 items-center justify-center rounded-full bg-white shadow-sm">
