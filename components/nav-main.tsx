@@ -8,7 +8,8 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { ChevronsUpDownIcon } from "lucide-react";
+import { ChevronRightIcon, ChevronsUpDownIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export function NavMain({
   items,
@@ -55,21 +56,26 @@ export function NavMain({
           Home
         </p>
 
-        <SidebarMenu className="px-0">
+        <SidebarMenu className="px-3">
           {items.map((item) => (
             <SidebarMenuItem key={item.title}>
               <SidebarMenuButton
                 tooltip={item.title}
                 isActive={item.isActive}
-                className={`h-9 rounded-none px-4 text-[12.56px] font-medium text-[#1F2A37] ${
+                className={cn(
+                  "h-9 px-3 text-[12.56px] font-medium text-[#1F2A37]",
                   item.isActive
-                    ? "border-r-2 border-[#2563EB] bg-[#EFF6FF] text-[#2563EB] hover:bg-[#EFF6FF] hover:text-[#2563EB]"
-                    : ""
-                }`}
+                    ? "rounded-lg bg-[#F3F4F6] text-[#2563EB] hover:bg-[#F3F4F6] hover:text-[#2563EB]"
+                    : "rounded-none",
+                )}
               >
                 {item.icon}
                 <span className="flex-1">{item.title}</span>
-                {item.badge}
+                {item.isActive ? (
+                  <ChevronRightIcon className="size-4 shrink-0 text-[#2563EB]" />
+                ) : (
+                  item.badge
+                )}
               </SidebarMenuButton>
             </SidebarMenuItem>
           ))}

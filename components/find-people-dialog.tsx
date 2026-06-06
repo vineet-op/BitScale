@@ -158,7 +158,7 @@ export function FindPeopleDialog({
           </div>
 
           {/* Bottom buttons */}
-          <div className="flex items-center gap-3 border-t border-[#E5E7EB] px-5 py-4">
+          <div className="flex items-center gap-3 px-5 py-4">
             <Button
               variant="outline"
               className="flex h-auto items-center gap-2 border-[#E5E7EB] px-3 py-2 text-[12px] font-medium text-[#1F2A37] shadow-none hover:bg-gray-50"
